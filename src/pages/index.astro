@@ -34,32 +34,32 @@ for (const review of reviews.slice(0, 6)) {
     <section class="mb-12">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="relative lg:col-span-2">
-          <a href={`/post/${featuredPost.slug}`}>
+          <a href={`/post/${featuredPost?.slug}`}>
             <img 
-              src={featuredPost.image} 
-              alt={featuredPost.title} 
+              src={featuredPost?.image} 
+              alt={featuredPost?.title} 
               class="w-full object-cover rounded-lg hover:opacity-90 transition"
             />
           </a>
         </div>
         <div class="flex flex-col justify-center lg:col-span-1">
           <div class="text-sm text-gray-500 mb-2">
-            {new Date(featuredPost.date_created).toLocaleDateString('en-US', { 
+            {new Date(featuredPost?.date_created).toLocaleDateString('en-US', { 
               year: 'numeric', 
               month: 'long', 
               day: 'numeric' 
             })}
           </div>
           <h1 class="text-3xl font-bold mb-4 text-gray-900">
-            <a href={`/post/${featuredPost.slug}`} class="hover:text-blue-600 transition">
-              {featuredPost.title}
+            <a href={`/post/${featuredPost?.slug}`} class="hover:text-blue-600 transition">
+              {featuredPost?.title}
             </a>
           </h1>
           <p class="text-gray-600 mb-6">
-            {featuredPost.excerpt}
+            {featuredPost?.excerpt}
           </p>
           <a 
-            href={`/post/${featuredPost.slug}`}
+            href={`/post/${featuredPost?.slug}`}
             class="inline-flex items-center gap-2 border-2 border-green-600 text-green-600 font-bold py-3 px-8 rounded-lg transition bg-white hover:bg-green-600 hover:text-white"
           >
             Read Full Article
