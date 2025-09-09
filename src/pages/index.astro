@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getPosts, getReviews, getListing } from '../utils/directus.js';
+import { siteConfig } from '../config/site';
+
+// 获取文章数据
+const posts = await getPosts();
+
+// 获取特色文章（第一篇文章）
+const featuredPost = posts[0];
+
+// 获取剩余文章列表（显示所有剩余文章）
+const articleList = posts.slice(1);
+
+// 获取reviews及其listing信息
+let smartRecommendations = [];
+const reviews = await getReviews();
+for (const review of reviews.slice(0, 6)) {
+  if (review.listing) {
+    const listing = await getListing(review.listing);
+    if (listing && listing.top1_pic && listing.top1_name && listing.top1_link) {
+      smartRecommendations.push({
+        name: listing.top1_name,
+        image: `/uploads/${listing.top1_pic}`,
+        link: listing.top1_link
+      });
+    }
+  }
+}
+---
+
+<Layout title={`${siteConfig.name} | ${siteConfig.description}`}>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section class="mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="relative lg:col-span-2">
+          <a href={`/post/${featuredPost.slug}`}>
+            <img 
+              src={featuredPost.image} 
+              alt={featuredPost.title} 
+              class="w-full object-cover rounded-lg hover:opacity-90 transition"
+            />
+          </a>
+        </div>
+        <div class="flex flex-col justify-center lg:col-span-1">
+          <div class="text-sm text-gray-500 mb-2">
+            {new Date(featuredPost.date_created).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </div>
+          <h1 class="text-3xl font-bold mb-4 text-gray-900">
+            <a href={`/post/${featuredPost.slug}`} class="hover:text-blue-600 transition">
+              {featuredPost.title}
+            </a>
+          </h1>
+          <p class="text-gray-600 mb-6">
+            {featuredPost.excerpt}
+          </p>
+          <a 
+            href={`/post/${featuredPost.slug}`}
+            class="inline-flex items-center gap-2 border-2 border-green-600 text-green-600 font-bold py-3 px-8 rounded-lg transition bg-white hover:bg-green-600 hover:text-white"
+          >
+            Read Full Article
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2">
+        <h2 class="text-2xl font-bold mb-6 text-gray-900">More Articles</h2>
+        <div class="space-y-8">
+          {articleList.map(post => (
+            <article class="border-b border-gray-200 pb-8">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-1">
+                  <img 
+                    src={post.image} 
+                    alt={post.title}
+                    class="w-full h-36 object-cover rounded-lg"
+                  />
+                </div>
+                <div class="md:col-span-2">
+                  <div class="text-sm text-gray-500 mb-2">
+                    {new Date(post.date_created).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                  <h3 class="text-xl font-bold mb-2 text-gray-900">
+                    <a href={`/post/${post.slug}`} class="hover:text-blue-600">
+                      {post.title}
+                    </a>
+                  </h3>
+                  <p class="text-gray-600">{post.excerpt}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="lg:col-span-1">
+        <h2 class="text-2xl font-bold mb-6 text-gray-900">Recommendations</h2>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <div class="space-y-4">
+            {smartRecommendations.length > 0 ? (
+              smartRecommendations.map(rec => (
+                <div class="flex bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition items-center min-h-[90px]">
+                  <a 
+                    href={rec.link}
+                    class="flex-shrink-0 w-20 h-20 flex items-center justify-center group"
+                  >
+                    <img 
+                      src={rec.image} 
+                      alt={rec.name} 
+                      class="w-16 h-16 object-contain transition-transform group-hover:scale-105"
+                    />
+                  </a>
+                  <div class="flex flex-col flex-1 justify-between h-full pl-4">
+                    <a 
+                      href={rec.link}
+                      class="text-grey-600 font-medium text-sm group-hover:underline mb-2 line-clamp-2"
+                    >
+                      {rec.name}
+                    </a>
+                    <div class="flex-1"></div>
+                    <div class="flex justify-end">
+                      <a 
+                        href={rec.link}
+                        target="_blank"
+                        class="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-semibold py-1 px-4 rounded transition-colors text-xs shadow group"
+                      >
+                        Visit Site
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div class="text-gray-400 text-center">No recommendations</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-white py-10 mt-4">
+      <div class="max-w-3xl mx-auto px-4">
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 flex flex-col sm:flex-row items-center px-6 py-6">
+          <div class="flex-shrink-0 flex flex-col items-center justify-center h-20 w-28 mb-4 sm:mb-0 sm:mr-6">
+            <svg width="87" height="84" viewBox="0 0 87 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M42.8687 76.8C64.0765 76.8 81.2688 59.6077 81.2688 38.4C81.2688 17.1923 64.0765 0 42.8687 0C21.661 0 4.46875 17.1923 4.46875 38.4C4.46875 59.6077 21.661 76.8 42.8687 76.8Z" fill="#22c55e"></path>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M61.8353 21.7221C62.7889 22.6623 63.2657 23.1325 63.429 23.6817C63.5524 24.0964 63.5524 24.538 63.429 24.9526C63.2657 25.5019 62.7889 25.972 61.8353 26.9122L41.1443 47.3134C39.6672 48.7698 38.9287 49.498 38.0147 49.498C37.1007 49.498 36.3622 48.7698 34.8851 47.3134L27.4991 40.0309C26.5455 39.0906 26.0687 38.6205 25.9053 38.0712C25.782 37.6566 25.782 37.215 25.9053 36.8004C26.0687 36.2511 26.5455 35.781 27.4991 34.8407C28.4287 33.9242 28.8935 33.4659 29.4334 33.3083C29.8412 33.1893 30.2745 33.1893 30.6823 33.3083C31.2222 33.4659 31.6869 33.9242 32.6165 34.8407L38.0147 40.1633L56.7178 21.7221C57.6474 20.8055 58.1122 20.3472 58.6521 20.1897C59.0599 20.0707 59.4932 20.0707 59.901 20.1897C60.4409 20.3472 60.9057 20.8055 61.8353 21.7221Z" fill="white"></path>
+              <rect x="0.557188" y="55.7525" width="85.2856" height="27.6856" rx="4.24281" fill="white"></rect>
+              <rect x="0.557188" y="55.7525" width="85.2856" height="27.6856" rx="4.24281" stroke="#22c55e" stroke-width="1.11438"></rect>
+              <path d="M35.2882 63.3844C35.3863 63.1856 35.6698 63.1856 35.7679 63.3844L36.4384 64.743C36.4774 64.822 36.5527 64.8767 36.6398 64.8893L38.1392 65.1072C38.3585 65.1391 38.4461 65.4087 38.2874 65.5634L37.2024 66.6209C37.1394 66.6824 37.1106 66.7709 37.1255 66.8577L37.3816 68.351C37.4191 68.5694 37.1898 68.736 36.9936 68.6329L35.6525 67.9279C35.5746 67.8869 35.4815 67.8869 35.4036 67.9279L34.0626 68.6329C33.8664 68.736 33.637 68.5694 33.6745 68.351L33.9306 66.8577C33.9455 66.7709 33.9167 66.6824 33.8537 66.6209L32.7688 65.5634C32.61 65.4087 32.6976 65.1391 32.917 65.1072L34.4163 64.8893C34.5035 64.8767 34.5788 64.822 34.6177 64.743L35.2882 63.3844Z" fill="#22c55e"></path>
+              <path d="M42.8806 59.8706C43.0114 59.6056 43.3893 59.6056 43.5201 59.8706L44.6458 62.1513C44.6977 62.2566 44.7981 62.3295 44.9142 62.3464L47.4312 62.7121C47.7237 62.7546 47.8405 63.1141 47.6288 63.3204L45.8075 65.0957C45.7235 65.1776 45.6851 65.2956 45.705 65.4113L46.1349 67.9181C46.1849 68.2094 45.8791 68.4315 45.6175 68.294L43.3663 67.1105C43.2624 67.0558 43.1383 67.0558 43.0344 67.1105L40.7832 68.294C40.5216 68.4315 40.2159 68.2094 40.2658 67.9181L40.6958 65.4113C40.7156 65.2956 40.6772 65.1776 40.5932 65.0957L38.7719 63.3204C38.5603 63.1141 38.6771 62.7546 38.9696 62.7121L41.4865 62.3464C41.6026 62.3295 41.703 62.2566 41.755 62.1513L42.8806 59.8706Z" fill="#22c55e"></path>
+              <path d="M50.632 63.3844C50.7301 63.1856 51.0136 63.1856 51.1117 63.3844L51.7822 64.743C51.8211 64.822 51.8964 64.8767 51.9836 64.8893L53.4829 65.1072C53.7023 65.1391 53.7899 65.4087 53.6311 65.5634L52.5462 66.6209C52.4832 66.6824 52.4544 66.7709 52.4693 66.8577L52.7254 68.351C52.7629 68.5694 52.5335 68.736 52.3373 68.6329L50.9963 67.9279C50.9184 67.8869 50.8253 67.8869 50.7474 67.9279L49.4063 68.6329C49.2101 68.736 48.9808 68.5694 49.0183 68.351L49.2744 66.8577C49.2893 66.7709 49.2605 66.6824 49.1975 66.6209L48.1125 65.5634C47.9538 65.4087 48.0414 65.1391 48.2608 65.1072L49.7601 64.8893C49.8472 64.8767 49.9225 64.822 49.9615 64.743L50.632 63.3844Z" fill="#22c55e"></path>
+              <path d="M21.6022 72.1316H27.055V73.2164H24.9814V78.8516H23.6854V73.2164H21.6022V72.1316ZM31.8719 74.2052C31.8719 73.9044 31.7791 73.6644 31.5935 73.4852C31.4143 73.306 31.1327 73.2164 30.7487 73.2164H29.3183V75.2036H30.7487C31.0047 75.2036 31.2159 75.1652 31.3823 75.0884C31.5487 75.0052 31.6703 74.89 31.7471 74.7428C31.8303 74.5892 31.8719 74.41 31.8719 74.2052ZM30.7871 72.1316C31.3311 72.1316 31.7791 72.2276 32.1311 72.4196C32.4895 72.6052 32.7551 72.858 32.9279 73.178C33.1071 73.4916 33.1967 73.834 33.1967 74.2052C33.1967 74.4548 33.1519 74.7044 33.0623 74.954C32.9727 75.1972 32.8319 75.4212 32.6399 75.626C32.4479 75.8244 32.1983 75.9844 31.8911 76.106C31.5903 76.2276 31.2223 76.2884 30.7871 76.2884H29.3183V78.8516H28.0223V72.1316H30.7871ZM31.5167 75.8564L33.3311 78.8516H31.8815L30.1439 75.8564H31.5167ZM34.2839 72.1316H35.5799V76.3748C35.5799 76.6884 35.6439 76.954 35.7719 77.1716C35.8999 77.3828 36.0727 77.5428 36.2903 77.6516C36.5143 77.7604 36.7703 77.8148 37.0583 77.8148C37.3527 77.8148 37.6119 77.7604 37.8359 77.6516C38.0599 77.5428 38.2359 77.3828 38.3639 77.1716C38.4919 76.954 38.5559 76.6884 38.5559 76.3748V72.1316H39.8519V76.3076C39.8519 76.7492 39.7751 77.1332 39.6215 77.4596C39.4679 77.786 39.2567 78.058 38.9879 78.2756C38.7255 78.4932 38.4247 78.6564 38.0855 78.7652C37.7527 78.8676 37.4039 78.9188 37.0391 78.9188C36.5527 78.9188 36.0983 78.8228 35.6759 78.6308C35.2599 78.4388 34.9239 78.1508 34.6679 77.7668C34.4119 77.3828 34.2839 76.8964 34.2839 76.3076V72.1316ZM42.0694 76.9508C42.1014 77.13 42.1718 77.2868 42.2806 77.4212C42.3894 77.5556 42.5302 77.6612 42.703 77.738C42.8822 77.8084 43.0902 77.8436 43.327 77.8436C43.6982 77.8436 43.9766 77.7604 44.1622 77.594C44.3478 77.4212 44.4406 77.2132 44.4406 76.97C44.4406 76.778 44.383 76.618 44.2678 76.49C44.1526 76.362 43.9894 76.2532 43.7782 76.1636C43.5734 76.074 43.3334 75.9876 43.0582 75.9044C42.8022 75.8276 42.5494 75.7444 42.2998 75.6548C42.0502 75.5652 41.823 75.4532 41.6182 75.3188C41.4134 75.1844 41.2502 75.0116 41.1286 74.8004C41.0134 74.5828 40.9558 74.3108 40.9558 73.9844C40.9558 73.5748 41.055 73.226 41.2534 72.938C41.4582 72.65 41.7366 72.4324 42.0886 72.2852C42.4406 72.138 42.847 72.0644 43.3078 72.0644C43.6982 72.0644 44.0502 72.122 44.3638 72.2372C44.6774 72.346 44.9398 72.5092 45.151 72.7268C45.3686 72.938 45.5286 73.2004 45.631 73.514L44.431 73.8404C44.399 73.6996 44.3286 73.578 44.2198 73.4756C44.111 73.3732 43.9798 73.2932 43.8262 73.2356C43.6726 73.1716 43.5062 73.1396 43.327 73.1396C43.135 73.1332 42.959 73.162 42.799 73.226C42.639 73.29 42.511 73.3828 42.415 73.5044C42.319 73.626 42.271 73.7668 42.271 73.9268C42.271 74.106 42.3254 74.25 42.4342 74.3588C42.543 74.4612 42.687 74.5508 42.8662 74.6276C43.0454 74.698 43.247 74.7684 43.471 74.8388C43.7398 74.9156 44.0086 75.0052 44.2774 75.1076C44.5462 75.2036 44.7926 75.3284 45.0166 75.482C45.2406 75.6292 45.4198 75.818 45.5542 76.0484C45.695 76.2788 45.7654 76.57 45.7654 76.922C45.7654 77.2932 45.6758 77.6292 45.4966 77.93C45.3238 78.2308 45.0614 78.4708 44.7094 78.65C44.3574 78.8292 43.9158 78.9188 43.3846 78.9188C42.9494 78.9188 42.5526 78.8548 42.1942 78.7268C41.8422 78.5988 41.551 78.4132 41.3206 78.17C41.0902 77.9204 40.9398 77.626 40.8694 77.2868L42.0694 76.9508ZM46.4834 72.1316H51.9362V73.2164H49.8626V78.8516H48.5666V73.2164H46.4834V72.1316ZM57.6268 73.2164H54.1996V74.9252H56.7628V75.9716H54.1996V77.7668H57.6268V78.8516H52.9036V72.1316H57.6268V73.2164ZM61.2498 72.1316C61.9666 72.1316 62.5874 72.2724 63.1122 72.554C63.6434 72.8292 64.0562 73.2196 64.3506 73.7252C64.645 74.2308 64.7922 74.826 64.7922 75.5108C64.7922 76.1892 64.645 76.778 64.3506 77.2772C64.0562 77.7764 63.6434 78.1636 63.1122 78.4388C62.5874 78.714 61.9666 78.8516 61.2498 78.8516H58.7442V72.1316H61.2498ZM61.2114 77.7668C61.9346 77.7668 62.4914 77.5684 62.8818 77.1716C63.2722 76.7684 63.4674 76.2148 63.4674 75.5108C63.4674 74.8004 63.2722 74.2404 62.8818 73.8308C62.4914 73.4212 61.9346 73.2164 61.2114 73.2164H60.0402V77.7668H61.2114Z" fill="#323738"></path>
+            </svg>
+          </div>
+          <div class="text-left">
+            <h3 class="text-xl font-bold mb-1 text-gray-900">We pride ourselves on objectivity</h3>
+            <p class="text-gray-600 text-base max-w-2xl">
+              Our reviewers are committed to providing professional and comprehensive information, covering all the most crucial factors to present their independent opinion.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section> 
+  </main>
+</Layout>

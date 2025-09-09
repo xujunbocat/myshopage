@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+---
+
+<Layout title="Advertising Disclosure">
+  <div class="min-h-screen">
+    <!-- Hero 区域 -->
+    <div class="bg-orange-50">
+      <div class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Advertising Disclosure</h1>
+        <p class="text-gray-600">
+          [Last Revised: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}]
+        </p>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="max-w-5xl mx-auto px-4 py-12">
+      <div class="prose prose-lg max-w-none">
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Affiliate Marketing Disclosure</h2>
+          <p class="text-gray-600 mb-4">
+            {siteConfig.name} participates in various affiliate marketing programs, which means we may earn commissions on purchases made through our links to retailer sites. This comes at no additional cost to you.
+          </p>
+          <p class="text-gray-600 mb-4">
+            We only recommend products and services that we believe will provide value to our readers. Our affiliate relationships do not influence our content or recommendations.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Product Reviews and Recommendations</h2>
+          <p class="text-gray-600 mb-4">
+            Our product reviews and recommendations are based on thorough research and analysis. While we may receive compensation for purchases made through our affiliate links, this does not affect our honest opinions and evaluations.
+          </p>
+          <p class="text-gray-600 mb-4">
+            We strive to provide accurate and unbiased information to help you make informed decisions about your purchases.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sponsored Content</h2>
+          <p class="text-gray-600 mb-4">
+            From time to time, we may publish sponsored content or reviews. All sponsored content will be clearly marked as such. We maintain full editorial control over our content, and our opinions remain our own.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Advertising and Third-Party Links</h2>
+          <p class="text-gray-600 mb-4">
+            Our website may contain advertisements and links to third-party websites. We are not responsible for the content, privacy policies, or practices of any third-party websites. We encourage you to review the privacy policies and terms of service of any website you visit.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact Information</h2>
+          <p class="text-gray-600 mb-4">
+            If you have any questions about our advertising practices or this disclosure, please contact us at:
+          </p>
+          <p class="text-gray-600">
+            Email: {siteConfig.email}
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout> 

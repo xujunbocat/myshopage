@@ -1,0 +1,96 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+---
+
+<Layout title="Privacy Policy">
+  <div class="min-h-screen">
+    <!-- Hero 区域 -->
+    <div class="bg-orange-50">
+      <div class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Privacy Policy</h1>
+        <p class="text-gray-600">
+          [Last Revised: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}]
+        </p>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="max-w-5xl mx-auto px-4 py-12">
+      <div class="prose prose-lg max-w-none">
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Introduction</h2>
+          <p class="text-gray-600 mb-4">
+            At {siteConfig.name} ({siteConfig.url}), we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your information when you visit our blog.
+          </p>
+          <p class="text-gray-600 mb-4">
+            Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Information We Collect</h2>
+          <p class="text-gray-600 mb-4">
+            As a blog website, we collect minimal information about our visitors. The information we may collect includes:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Comments Data: When you choose to leave a comment on our blog posts, we collect the information you provide, such as your name and email address.</li>
+            <li>Analytics Data: We use analytics tools to collect anonymous information about how visitors use our website, such as page views, time spent on pages, and referring websites.</li>
+            <li>Newsletter Data: If you choose to subscribe to our newsletter, we collect your email address to send you updates about new content.</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Use of Your Information</h2>
+          <p class="text-gray-600 mb-4">
+            We use the information we collect to:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Publish and manage comments on our blog posts</li>
+            <li>Send newsletters and updates to subscribers</li>
+            <li>Improve our website content and user experience</li>
+            <li>Analyze website traffic and usage patterns</li>
+            <li>Respond to your comments and inquiries</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Cookies and Analytics</h2>
+          <p class="text-gray-600 mb-4">
+            We use cookies and similar tracking technologies to help us understand how visitors interact with our website. These tools help us improve our content and user experience. The information collected is anonymous and does not personally identify you.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Third-Party Links</h2>
+          <p class="text-gray-600 mb-4">
+            Our blog may contain links to other websites, including product reviews and recommendations. We are not responsible for the privacy practices of these external sites. We encourage you to read the privacy policies of any website you visit.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Your Rights</h2>
+          <p class="text-gray-600 mb-4">
+            You have the right to:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Request access to your personal information</li>
+            <li>Request correction of your personal information</li>
+            <li>Request deletion of your personal information</li>
+            <li>Opt-out of our newsletter at any time</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact Us</h2>
+          <p class="text-gray-600 mb-4">
+            If you have any questions about this Privacy Policy or our data practices, please contact us at:
+          </p>
+          <p class="text-gray-600">
+            Email: {siteConfig.email}
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout> 

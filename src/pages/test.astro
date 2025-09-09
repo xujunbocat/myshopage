@@ -1,0 +1,84 @@
+<!-- Header -->
+<header class="px-6 py-4 flex justify-between items-center bg-white shadow">
+    <div class="text-2xl font-bold">Pain Relief Daily</div>
+    <nav>
+      <ul class="flex space-x-4">
+        <li><a href="#home" class="hover:text-blue-600">Home</a></li>
+        <li><a href="#comparisons" class="hover:text-blue-600">Comparisons</a></li>
+        <li><a href="#remedies" class="hover:text-blue-600">Remedies</a></li>
+        <li><a href="#posts" class="hover:text-blue-600">Blog</a></li>
+        <li><a href="#about" class="hover:text-blue-600">About</a></li>
+        <li><a href="#contact" class="hover:text-blue-600">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero px-6 py-16 text-center bg-gray-100">
+    <h1 class="text-4xl font-extrabold mb-4">Your Daily Guide to Pain Relief Solutions</h1>
+    <p class="text-lg mb-6">Discover expert comparisons, natural remedies, and actionable tips to manage pain effectively.</p>
+    <a href="#comparisons" class="px-6 py-3 bg-blue-600 text-white rounded shadow hover:bg-blue-700">Explore Top Picks</a>
+  </section>
+
+  <!-- Featured Comparisons -->
+  <section id="comparisons" class="px-6 py-16">
+    <h2 class="text-3xl font-semibold mb-8">Top 5 Pain Relief Products</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Repeat for each product -->
+      <article class="bg-white rounded-lg shadow p-4">
+        <img src="/path/to/product1.jpg" alt="Pain Relief Cream A" class="w-full h-40 object-cover rounded">
+        <h3 class="mt-4 text-xl font-bold">Pain Relief Cream A</h3>
+        <p class="mt-2 text-gray-600">Fast-acting relief for sore muscles and joints.</p>
+        <a href="/comparison/cream-a" class="mt-4 inline-block text-blue-600 hover:underline">Read Review</a>
+      </article>
+      <!-- ... more product cards ... -->
+    </div>
+  </section>
+
+  <!-- Remedy Categories -->
+  <section id="remedies" class="px-6 py-16 bg-gray-50">
+    <h2 class="text-3xl font-semibold mb-8">Natural Remedy Categories</h2>
+    <div class="flex flex-wrap justify-between gap-6">
+      <div class="w-full sm:w-1/2 lg:w-1/4 bg-white shadow rounded p-4">
+        <h4 class="font-bold mb-2">Herbal Supplements</h4>
+        <p class="text-gray-600">Explore turmeric, ginger, magnesium and more.</p>
+      </div>
+      <div class="w-full sm:w-1/2 lg:w-1/4 bg-white shadow rounded p-4">
+        <h4 class="font-bold mb-2">Therapies & Exercises</h4>
+        <p class="text-gray-600">Guides on yoga, stretching, and physical therapy.</p>
+      </div>
+      <div class="w-full sm:w-1/2 lg:w-1/4 bg-white shadow rounded p-4">
+        <h4 class="font-bold mb-2">Topical Treatments</h4>
+        <p class="text-gray-600">Creams, patches, and oils for targeted relief.</p>
+      </div>
+      <div class="w-full sm:w-1/2 lg:w-1/4 bg-white shadow rounded p-4">
+        <h4 class="font-bold mb-2">Lifestyle Tips</h4>
+        <p class="text-gray-600">Sleep, diet, and stress management strategies.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Blog Posts -->
+  <section id="posts" class="px-6 py-16">
+    <h2 class="text-3xl font-semibold mb-8">Latest Insights & Tips</h2>
+    <ul class="space-y-6">
+      <!-- Repeat for each post -->
+      <li class="flex items-start space-x-4">
+        <img src="/path/to/thumb1.jpg" alt="Post: 5 Stretches for Back Pain" class="w-32 h-20 object-cover rounded">
+        <div>
+          <a href="/post/back-pain-stretches" class="text-xl font-bold hover:text-blue-600">5 Essential Stretches for Back Pain Relief</a>
+          <p class="text-gray-600 mt-1">Learn simple stretches you can do daily to ease back discomfort.</p>
+        </div>
+      </li>
+      <!-- ... more posts ... -->
+    </ul>
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section class="px-6 py-16 bg-blue-600 text-white text-center">
+    <h2 class="text-3xl font-semibold mb-4">Subscribe for Weekly Pain Relief Tips</h2>
+    <form action="#" method="post" class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+      <input type="email" placeholder="Your email address" required class="flex-1 p-3 rounded text-gray-800">
+      <button type="submit" class="px-6 py-3 bg-white text-blue-600 font-bold rounded hover:bg-gray-100">Subscribe</button>
+    </form>
+  </section>

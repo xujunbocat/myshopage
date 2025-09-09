@@ -1,0 +1,33 @@
+{
+  "buttons": {
+    "visit_site": "VISIT SITE",
+    "product_review": "Product Review",
+    "check_availability": "Check Availability"
+  },
+  "labels": {
+    "best_overall": "Best Overall",
+    "editors_choice": "Editor's Choice",
+    "our_top_choice": "Our Top Choice",
+    "reviews": "Reviews",
+    "by": "By"
+  },
+  "ratings": {
+    "excellent": "Excellent",
+    "great": "Great", 
+    "good": "Good",
+    "fair": "Fair",
+    "ok": "OK"
+  },
+  "popup": {
+    "exclusive_offer": "Exclusive Offer Today"
+  },
+  "footer": {
+    "contact_us": "Contact Us",
+    "about": "About",
+    "privacy_policy": "Privacy Policy",
+    "terms_conditions": "Terms and Conditions",
+    "advertising_disclosure": "Advertising Disclosure",
+    "copyright": "Copyright",
+    "disclaimer": "Trademarks used on our website are the property of their respective owners and it is not intended that our website or our services should implicitly or explicitly endorse them. The results and comments are illustrative and you may not achieve the same results when using these products. We provide feedback on products and services through in-depth research and experienced editors. We are an independent company and the opinions expressed here are our own. This website is an independent professional comparison and review site that is supported by referral fees for the website and products."
+  }
+} 

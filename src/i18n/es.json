@@ -1,0 +1,33 @@
+{
+  "buttons": {
+    "visit_site": "VISITAR SITIO",
+    "product_review": "Reseña del Producto",
+    "check_availability": "Verificar Disponibilidad"
+  },
+  "labels": {
+    "best_overall": "Mejor en General",
+    "editors_choice": "Elección del Editor",
+    "our_top_choice": "Nuestra Mejor Elección",
+    "reviews": "Reseñas",
+    "by": "Por"
+  },
+  "ratings": {
+    "excellent": "Excelente",
+    "great": "Muy Bueno", 
+    "good": "Bueno",
+    "fair": "Regular",
+    "ok": "Aceptable"
+  },
+  "popup": {
+    "exclusive_offer": "Oferta Exclusiva Hoy"
+  },
+  "footer": {
+    "contact_us": "Contáctanos",
+    "about": "Acerca de",
+    "privacy_policy": "Política de Privacidad",
+    "terms_conditions": "Términos y Condiciones",
+    "advertising_disclosure": "Divulgación Publicitaria",
+    "copyright": "Derechos de Autor",
+    "disclaimer": "Las marcas registradas utilizadas en nuestro sitio web son propiedad de sus respectivos propietarios y no está previsto que nuestro sitio web o nuestros servicios las respalden implícita o explícitamente. Los resultados y comentarios son ilustrativos y es posible que no obtenga los mismos resultados al usar estos productos. Proporcionamos comentarios sobre productos y servicios a través de investigación profunda y editores experimentados. Somos una empresa independiente y las opiniones expresadas aquí son nuestras. Este sitio web es un sitio independiente profesional de comparación y reseñas que se apoya en tarifas de referencia para el sitio web y los productos."
+  }
+} 

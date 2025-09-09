@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+---
+
+<Layout title="Contact Us">
+  <div class="min-h-screen">
+    <!-- Hero 区域 -->
+    <div class="bg-orange-50">
+      <div class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Contact Us</h1>
+        <p class="text-gray-600">
+          We'd love to hear from you! Here's how you can reach us.
+        </p>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="max-w-5xl mx-auto px-4 py-12">
+      <div class="prose prose-lg max-w-none">
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Get in Touch</h2>
+          <p class="text-gray-600 mb-4">
+            Have questions about our product reviews or recommendations? Want to share your experience with a product? We're here to help!
+          </p>
+          <p class="text-gray-600 mb-4">
+            You can reach us through the following channels:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Email: {siteConfig.email}</li>
+            <li>Website: {siteConfig.url}</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Response Time</h2>
+          <p class="text-gray-600 mb-4">
+            We strive to respond to all inquiries within 24-48 hours during business days. Please note that response times may be longer during holidays or peak periods.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Business Hours</h2>
+          <p class="text-gray-600 mb-4">
+            Our team is available Monday through Friday, 9:00 AM to 5:00 PM EST. We do not operate on weekends or major holidays.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout> 

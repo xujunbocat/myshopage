@@ -1,0 +1,661 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import {
+  getReviewBySlug,
+  getListing,
+  getReviews,
+} from "../../utils/directus";
+import { getTranslations, getRatingText as getRatingKey, getLocalizedAuthors, formatLocalizedDate } from "../../utils/i18n";
+import ExitPopup from "../../components/ExitPopup.astro";
+import BottomBar from "../../components/BottomBar.astro";
+
+const { slug } = Astro.params;
+
+// 直接通过slug获取review数据
+const review = await getReviewBySlug(slug);
+
+// 检查数据有效性
+if (!review) {
+  Astro.response.status = 404;
+  return Astro.redirect("/404");
+}
+
+// 确定review的实际语言
+const actualLocale = review.language || 'en';
+
+// 获取翻译函数
+const { t } = await getTranslations(actualLocale);
+
+// 作者信息设置 - 使用本地化作者（基于实际语言环境和review ID）
+const author = getLocalizedAuthors(actualLocale, review.id || slug);
+
+// 获取关联的listing数据
+let listing = null;
+if (review.listing) {
+  listing = await getListing(review.listing);
+}
+
+// 定义每个产品的评分 (假定这些评分在实际开发中会从listing数据中获取)
+const ratings = {
+  top1: review.rating || 9.8,
+  top2: 8.9,
+  top3: 8.2,
+  top4: 7.5,
+  top5: 6.9,
+};
+
+// 定义评分人数
+function generateRandomRatingCounts() {
+  // 基础数值
+  const baseCounts = {
+    top1: 1500,
+    top2: 800,
+    top3: 600,
+    top4: 300,
+    top5: 132
+  };
+
+  // 为每个排名生成随机波动值（±20%）
+  const randomizeCount = (base: number) => {
+    const variation = base * 0.2; // 20%的波动范围
+    const randomVariation = Math.floor(Math.random() * variation * 2 - variation);
+    return Math.max(100, base + randomVariation); // 确保不会小于100
+  };
+
+  // 生成随机评分人数并保持降序
+  const counts = {
+    top1: randomizeCount(baseCounts.top1),
+    top2: randomizeCount(baseCounts.top2),
+    top3: randomizeCount(baseCounts.top3),
+    top4: randomizeCount(baseCounts.top4),
+    top5: randomizeCount(baseCounts.top5)
+  };
+
+  // 确保降序排列
+  const sortedCounts = Object.values(counts).sort((a, b) => b - a);
+  
+  return {
+    top1: sortedCounts[0].toLocaleString(),
+    top2: sortedCounts[1].toLocaleString(),
+    top3: sortedCounts[2].toLocaleString(),
+    top4: sortedCounts[3].toLocaleString(),
+    top5: sortedCounts[4].toLocaleString()
+  };
+}
+
+const ratingCounts = generateRandomRatingCounts();
+
+// 获取昨天的日期 - 使用本地化格式
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+const formattedDate = formatLocalizedDate(yesterday, actualLocale);
+
+// 生成星级评分 HTML
+const stars = Array.from({ length: 5 }, (_, i) =>
+  i < Math.round(review.rating) ? "★" : "☆",
+).join("");
+
+// 根据10分制评分生成星星
+function generateStars(rating: number) {
+  // 将10分制转换为5星制
+  const starCount = Math.round(rating / 2);
+
+  return Array.from({ length: 5 }, (_, i) => (i < starCount ? "★" : "☆")).join(
+    "",
+  );
+}
+
+// 多语言评价文本函数
+function getRatingText(rating: number) {
+  const ratingKey = getRatingKey(rating);
+  return t(`ratings.${ratingKey}`);
+}
+
+// 作者头像路径现在由getLocalizedAuthors函数直接提供
+
+const replaceDirectusImg = (html: string | undefined) =>
+  html && typeof html === 'string'
+    ? html.replace(/https?:\/\/panda-dance\.directus\.app\/assets\/([a-zA-Z0-9-]+)/g, '/uploads/$1')
+    : html;
+
+const reviewImage = review.image ? `/uploads/${review.image}` : undefined;
+const introduction = replaceDirectusImg(review.introduction);
+const summary = replaceDirectusImg(review.summary);
+
+---
+
+<Layout title={review.title} hideHeader={true} lang={actualLocale}>
+  <header class="relative h-[240px] flex items-center justify-center overflow-hidden">
+    {/* 背景图片或渐变色 */}
+    {review.image ? (
+      <img
+        src={reviewImage}
+        alt={review.title}
+        class="absolute inset-0 w-full h-full object-cover z-0"
+        loading="lazy"
+      />
+    ) : (
+      <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-orange-100 to-orange-200 z-0"></div>
+    )}
+    {/* 遮罩层 */}
+    <div class="absolute inset-0 w-full h-full bg-orange-50 opacity-80 z-10"></div>
+    {/* 内容层 */}
+    <div class="relative z-20 max-w-5xl mx-auto px-4 text-center">
+      <h1
+        class="title text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 tracking-wide leading-tight"
+      >
+        {review.title}
+      </h1>
+
+      <div class="author flex items-center justify-center text-gray-600">
+        <img
+          src={author?.avatar || "https://placehold.co/100x100"}
+          alt={author ? `${author.first_name} ${author.last_name}` : "Author"}
+          class="w-8 h-8 rounded-full mr-3 border border-gray-200"
+        />
+        <div class="flex items-center space-x-3">
+          <p class="text-sm">
+            {t('labels.by')} {
+              author
+                ? `${author.first_name} ${author.last_name}`
+                : "Unknown Author"
+            }
+          </p>
+          <span class="text-gray-400">•</span>
+          <p class="text-sm">{formattedDate}</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="introduction px-4 py-8 bg-gray-50">
+    <div class="max-w-5xl mx-auto">
+      <div
+        class="text-lg leading-relaxed text-gray-700"
+        set:html={introduction}
+      />
+    </div>
+  </section>
+
+  {
+    listing && (
+      <Fragment>
+        <ExitPopup
+          image={listing.top1_pic}
+          mark={listing.top1_mark}
+          link={listing.top1_link}
+          lang={actualLocale}
+        />
+        <BottomBar
+          name={listing.top1_name}
+          rating={ratings.top1}
+          link={listing.top1_link}
+          lang={actualLocale}
+        />
+        <section class="listing px-4 py-8">
+          <div class="max-w-5xl mx-auto">
+            <div class="top1 bg-white rounded-lg shadow-md border-2 border-orange-500 overflow-hidden mb-8 relative">
+              <div class="absolute top-0 left-0 z-10 flex text-s items-center ribbon tracking-wide font-semibold">
+                <div class="px-4 py-1 bg-lime-200 text-lime-800">1</div>
+                <div class="px-6 py-1 bg-orange-600 text-white rounded-br-3xl">
+                  {t('labels.best_overall')}
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-4">
+                  <a href={listing.top1_link} target="_blank">
+                    <img
+                      src={listing.top1_pic ? `/uploads/${listing.top1_pic}` : "https://placehold.co/400x400?text=No+Image"}
+                      alt={listing.top1_name}
+                      class="object-contain"
+                    />
+                  </a>
+                  <a
+                    href={listing.top1_salepage || listing.top1_link}
+                    target="_blank"
+                    class="mt-3 block text-center bg-orange-600 hover:bg-orange-700 text-white font-semibold py-1 px-4 rounded transition-colors flex items-center justify-center gap-2 group text-sm"
+                  >
+                    {t('buttons.product_review')}
+                    <div class="relative">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                      <span class="absolute top-1/2 -right-1 -translate-y-1/2 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-pulse group-hover:animate-none" />
+                    </div>
+                  </a>
+                </div>
+                <div class="md:w-1/2 p-4 flex flex-col justify-center">
+                  <a
+                    href={listing.top1_link}
+                    target="_blank"
+                    class="hover:text-blue-600 transition-colors"
+                  >
+                    <h3 class="listing-title text-2xl font-semibold mb-1 tracking-wide">
+                      {listing.top1_name}
+                    </h3>
+                  </a>
+                  <a
+                    href={listing.top1_link}
+                    target="_blank"
+                    class="inline-block bg-amber-50 text-xs font-semibold outline-1 outline-orange-400 outline-dashed py-1 px-2 rounded mb-2"
+                  >
+                    {listing.top1_mark}
+                  </a>
+                  <div
+                    class="pros-content text-base"
+                    set:html={listing.top1_pros}
+                  />
+                  <div
+                    class="cons-content text-base"
+                    set:html={listing.top1_cons}
+                  />
+                  <a
+                    href={listing.top1_link}
+                    target="_blank"
+                    class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mt-2 flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.visit_site')}
+                    <div class="relative">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                      <span class="absolute top-1/2 -right-1 -translate-y-1/2 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-pulse group-hover:animate-none" />
+                    </div>
+                  </a>
+                </div>
+                <div class="md:w-1/6 bg-sky-50 flex flex-col items-center justify-center py-4">
+                  <div class="flex md:flex-col w-full justify-between items-center px-4">
+                    <div class="w-1/2 md:w-full flex justify-center border-r md:border-r-0 md:border-b border-gray-200">
+                      <div class="text-black text-6xl font-bold text-center pr-4 md:pr-0 md:pb-4">
+                        {ratings.top1.toFixed(1)}
+                      </div>
+                    </div>
+                    <div class="w-1/2 md:w-full flex flex-col items-center pl-4 md:pl-0 md:pt-4">
+                      <div class="rating-text text-black text-2xl italic tracking-wide font-bold text-center">
+                        {getRatingText(ratings.top1)}
+                      </div>
+                      <div class="text-amber-500 text-lg text-center">
+                        {generateStars(ratings.top1)}
+                      </div>
+                      <div class="text-sm text-gray-500 text-center">
+                        <span>({ratingCounts.top1}) {t('labels.reviews')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8 relative">
+              <div class="absolute top-0 left-0 z-10 flex text-s items-center ribbon tracking-wide font-semibold">
+                <div class="px-4 bg-stone-200 text-lime-800 rounded-br-xl">
+                  2
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-4">
+                  <img
+                    src={listing.top2_pic ? `/uploads/${listing.top2_pic}` : "https://placehold.co/400x400?text=No+Image"}
+                    alt={listing.top2_name}
+                    class="object-contain"
+                  />
+                </div>
+                <div class="md:w-1/2 p-4 flex flex-col justify-center">
+                  <h3 class="listing-title text-2xl font-semibold mb-1 tracking-wide">
+                    {listing.top2_name}
+                  </h3>
+                  <div
+                    class="pros-content text-base"
+                    set:html={listing.top2_pros}
+                  />
+                  <div
+                    class="cons-content text-base"
+                    set:html={listing.top2_cons}
+                  />
+                  <a
+                    href={listing.top2_link}
+                    target="_blank"
+                    class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mt-2 flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.visit_site')}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="md:w-1/6 bg-sky-50 flex flex-col items-center justify-center py-4">
+                  <div class="flex md:flex-col w-full justify-between items-center px-4">
+                    <div class="w-1/2 md:w-full flex justify-center border-r md:border-r-0 md:border-b border-gray-200">
+                      <div class="text-black text-6xl font-bold text-center pr-4 md:pr-0 md:pb-4">
+                        {ratings.top2.toFixed(1)}
+                      </div>
+                    </div>
+                    <div class="w-1/2 md:w-full flex flex-col items-center pl-4 md:pl-0 md:pt-4">
+                      <div class="rating-text text-black text-2xl italic tracking-wide font-bold text-center">
+                        {getRatingText(ratings.top2)}
+                      </div>
+                      <div class="text-amber-500 text-lg text-center">
+                        {generateStars(ratings.top2)}
+                      </div>
+                      <div class="text-sm text-gray-500 text-center">
+                        <span>({ratingCounts.top2}) {t('labels.reviews')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8 relative">
+              <div class="absolute top-0 left-0 z-10 flex text-s items-center ribbon tracking-wide font-semibold">
+                <div class="px-4 bg-stone-200 text-lime-800 rounded-br-xl">
+                  3
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-4">
+                  <img
+                    src={listing.top3_pic ? `/uploads/${listing.top3_pic}` : "https://placehold.co/400x400?text=No+Image"}
+                    alt={listing.top3_name}
+                    class="object-contain"
+                  />
+                </div>
+                <div class="md:w-1/2 p-4 flex flex-col justify-center">
+                  <h3 class="listing-title text-2xl font-semibold mb-1 tracking-wide">
+                    {listing.top3_name}
+                  </h3>
+                  <div
+                    class="pros-content text-base"
+                    set:html={listing.top3_pros}
+                  />
+                  <div
+                    class="cons-content text-base"
+                    set:html={listing.top3_cons}
+                  />
+                  <a
+                    href={listing.top3_link}
+                    target="_blank"
+                    class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mt-2 flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.visit_site')}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="md:w-1/6 bg-sky-50 flex flex-col items-center justify-center py-4">
+                  <div class="flex md:flex-col w-full justify-between items-center px-4">
+                    <div class="w-1/2 md:w-full flex justify-center border-r md:border-r-0 md:border-b border-gray-200">
+                      <div class="text-black text-6xl font-bold text-center pr-4 md:pr-0 md:pb-4">
+                        {ratings.top3.toFixed(1)}
+                      </div>
+                    </div>
+                    <div class="w-1/2 md:w-full flex flex-col items-center pl-4 md:pl-0 md:pt-4">
+                      <div class="rating-text text-black text-2xl italic tracking-wide font-bold text-center">
+                        {getRatingText(ratings.top3)}
+                      </div>
+                      <div class="text-amber-500 text-lg text-center">
+                        {generateStars(ratings.top3)}
+                      </div>
+                      <div class="text-sm text-gray-500 text-center">
+                        <span>({ratingCounts.top3}) {t('labels.reviews')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8 relative">
+              <div class="absolute top-0 left-0 z-10 flex text-s items-center ribbon tracking-wide font-semibold">
+                <div class="px-4 bg-stone-200 text-lime-800 rounded-br-xl">
+                  4
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-4">
+                  <img
+                    src={listing.top4_pic ? `/uploads/${listing.top4_pic}` : "https://placehold.co/400x400?text=No+Image"}
+                    alt={listing.top4_name}
+                    class="object-contain"
+                  />
+                </div>
+                <div class="md:w-1/2 p-4 flex flex-col justify-center">
+                  <h3 class="listing-title text-2xl font-semibold mb-1 tracking-wide">
+                    {listing.top4_name}
+                  </h3>
+                  <div
+                    class="pros-content text-base"
+                    set:html={listing.top4_pros}
+                  />
+                  <div
+                    class="cons-content text-base"
+                    set:html={listing.top4_cons}
+                  />
+                  <a
+                    href={listing.top4_link}
+                    target="_blank"
+                    class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mt-2 flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.visit_site')}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="md:w-1/6 bg-sky-50 flex flex-col items-center justify-center py-4">
+                  <div class="flex md:flex-col w-full justify-between items-center px-4">
+                    <div class="w-1/2 md:w-full flex justify-center border-r md:border-r-0 md:border-b border-gray-200">
+                      <div class="text-black text-6xl font-bold text-center pr-4 md:pr-0 md:pb-4">
+                        {ratings.top4.toFixed(1)}
+                      </div>
+                    </div>
+                    <div class="w-1/2 md:w-full flex flex-col items-center pl-4 md:pl-0 md:pt-4">
+                      <div class="rating-text text-black text-2xl italic tracking-wide font-bold text-center">
+                        {getRatingText(ratings.top4)}
+                      </div>
+                      <div class="text-amber-500 text-lg text-center">
+                        {generateStars(ratings.top4)}
+                      </div>
+                      <div class="text-sm text-gray-500 text-center">
+                        <span>({ratingCounts.top4}) {t('labels.reviews')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8 relative">
+              <div class="absolute top-0 left-0 z-10 flex text-s items-center ribbon tracking-wide font-semibold">
+                <div class="px-4 bg-stone-200 text-lime-800 rounded-br-xl">
+                  5
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-4">
+                  <img
+                    src={listing.top5_pic ? `/uploads/${listing.top5_pic}` : "https://placehold.co/400x400?text=No+Image"}
+                    alt={listing.top5_name}
+                    class="object-contain"
+                  />
+                </div>
+                <div class="md:w-1/2 p-4 flex flex-col justify-center">
+                  <h3 class="listing-title text-2xl font-semibold mb-1 tracking-wide">
+                    {listing.top5_name}
+                  </h3>
+                  <div
+                    class="pros-content text-base"
+                    set:html={listing.top5_pros}
+                  />
+                  <div
+                    class="cons-content text-base"
+                    set:html={listing.top5_cons}
+                  />
+                  <a
+                    href={listing.top5_link}
+                    target="_blank"
+                    class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mt-2 flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.visit_site')}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="md:w-1/6 bg-sky-50 flex flex-col items-center justify-center py-4">
+                  <div class="flex md:flex-col w-full justify-between items-center px-4">
+                    <div class="w-1/2 md:w-full flex justify-center border-r md:border-r-0 md:border-b border-gray-200">
+                      <div class="text-black text-6xl font-bold text-center pr-4 md:pr-0 md:pb-4">
+                        {ratings.top5.toFixed(1)}
+                      </div>
+                    </div>
+                    <div class="w-1/2 md:w-full flex flex-col items-center pl-4 md:pl-0 md:pt-4">
+                        <div class="rating-text text-black text-2xl italic tracking-wide font-bold text-center">
+                        {getRatingText(ratings.top5)}
+                      </div>
+                      <div class="text-amber-500 text-lg text-center">
+                        {generateStars(ratings.top5)}
+                      </div>
+                      <div class="text-sm text-gray-500 text-center">
+                        <span>({ratingCounts.top5}) {t('labels.reviews')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="top-1 mb-2 px-4 py-8 bg-orange-50">
+          <div class="max-w-5xl mx-auto">
+            <h2 class="winner text-3xl font-bold mb-4 text-center tracking-wide flex items-center justify-center">
+              <img
+                src="/bowl.svg"
+                alt="Trophy"
+                class="w-8 h-8 mr-2"
+              />
+              {t('labels.our_top_choice')}
+            </h2>
+            <div class="bg-white rounded-lg shadow-md border-2 border-orange-500 overflow-hidden relative">
+              <div class="absolute top-0 left-0 z-10 flex text-s items-center ribbon tracking-wide font-semibold">
+                <div class="px-4 py-1 bg-lime-200 text-lime-800">1</div>
+                <div class="px-6 py-1 bg-orange-600 text-white rounded-br-3xl">
+                  {t('labels.editors_choice')}
+                </div>
+              </div>
+              <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/3 flex flex-col items-center justify-center p-4">
+                  <a href={listing.top1_link} target="_blank">
+                    <img
+                      src={listing.top1_pic ? `/uploads/${listing.top1_pic}` : "https://placehold.co/400x400?text=No+Image"}
+                      alt={listing.top1_name}
+                      class="object-contain"
+                    />
+                  </a>
+                  <a
+                    href={listing.top1_salepage || listing.top1_link}
+                    target="_blank"
+                    class="mt-3 block text-center bg-orange-600 hover:bg-orange-700 text-white font-semibold py-1 px-4 rounded transition-colors flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.product_review')}
+                    <div class="relative">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                      <span class="absolute top-1/2 -right-1 -translate-y-1/2 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-pulse group-hover:animate-none" />
+                    </div>
+                  </a>
+                </div>
+                <div class="md:w-1/2 p-4 flex flex-col justify-center">
+                  <a
+                    href={listing.top1_link}
+                    target="_blank"
+                    class="hover:text-blue-600 transition-colors"
+                  >
+                    <h3 class="listing-title text-2xl font-semibold mb-1 tracking-wide">
+                      {listing.top1_name}
+                    </h3>
+                  </a>
+                  <a
+                    href={listing.top1_link}
+                    target="_blank"
+                    class="inline-block bg-amber-50 text-xs font-semibold outline-1 outline-orange-400 outline-dashed py-1 px-2 rounded mb-2"
+                  >
+                    {listing.top1_mark}
+                  </a>
+                  <div
+                    class="pros-content text-base"
+                    set:html={listing.top1_pros}
+                  />
+                  <div
+                    class="cons-content text-base"
+                    set:html={listing.top1_cons}
+                  />
+                  <a
+                    href={listing.top1_link}
+                    target="_blank"
+                    class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors mt-2 flex items-center justify-center gap-2 group"
+                  >
+                    {t('buttons.visit_site')}
+                    <div class="relative">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                      <span class="absolute top-1/2 -right-1 -translate-y-1/2 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-pulse group-hover:animate-none" />
+                    </div>
+                  </a>
+                </div>
+                <div class="md:w-1/6 bg-sky-50 flex flex-col items-center justify-center py-4">
+                  <div class="flex md:flex-col w-full justify-between items-center px-4">
+                    <div class="w-1/2 md:w-full flex justify-center border-r md:border-r-0 md:border-b border-gray-200">
+                      <div class="text-black text-6xl font-bold text-center pr-4 md:pr-0 md:pb-4">
+                        {ratings.top1.toFixed(1)}
+                      </div>
+                    </div>
+                    <div class="w-1/2 md:w-full flex flex-col items-center pl-4 md:pl-0 md:pt-4">
+                        <div class="rating-text text-black text-2xl italic tracking-wide font-bold text-center">
+                        {getRatingText(ratings.top1)}
+                      </div>
+                      <div class="text-amber-500 text-lg text-center">
+                        {generateStars(ratings.top1)}
+                      </div>
+                      <div class="text-sm text-gray-500 text-center">
+                        <span>({ratingCounts.top1}) {t('labels.reviews')}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Fragment>
+    )
+  }
+
+  <section class="summary p-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-lg/8 text-gray-700 mb-6" set:html={summary} />
+    </div>
+  </section>
+
+  {
+    listing && (
+      <section class="cta p-4 mb-8">
+        <div class="max-w-5xl mx-auto text-center">
+          <a
+            href={listing.top1_link}
+            target="_blank"
+            class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold text-lg py-4 px-16 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative group"
+          >
+            <span class="relative inline-flex items-center">
+              {t('buttons.check_availability')}
+              <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-300 rounded-full animate-pulse group-hover:animate-none" />
+            </span>
+          </a>
+        </div>
+      </section>
+    )
+  }
+</Layout>

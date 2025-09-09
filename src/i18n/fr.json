@@ -1,0 +1,33 @@
+{
+  "buttons": {
+    "visit_site": "VISITER LE SITE",
+    "product_review": "Avis sur le produit",
+    "check_availability": "Vérifier la disponibilité"
+  },
+  "labels": {
+    "best_overall": "Meilleur dans l'ensemble",
+    "editors_choice": "Choix de l'éditeur",
+    "our_top_choice": "Notre premier choix",
+    "reviews": "Avis",
+    "by": "Par"
+  },
+  "ratings": {
+    "excellent": "Excellent",
+    "great": "Formidable",
+    "good": "Bon",
+    "fair": "Correct",
+    "ok": "OK"
+  },
+  "popup": {
+    "exclusive_offer": "Offre exclusive aujourd'hui"
+  },
+  "footer": {
+    "contact_us": "Nous contacter",
+    "about": "À propos",
+    "privacy_policy": "Politique de confidentialité",
+    "terms_conditions": "Conditions générales",
+    "advertising_disclosure": "Divulgation publicitaire",
+    "copyright": "Droits d'auteur",
+    "disclaimer": "Les marques utilisées sur notre site Web sont la propriété de leurs propriétaires respectifs et il n'est pas prévu que notre site Web ou nos services les approuvent implicitement ou explicitement. Les résultats et commentaires sont illustratifs et vous ne pouvez pas obtenir les mêmes résultats lors de l'utilisation de ces produits. Nous fournissons des commentaires sur les produits et services grâce à des recherches approfondies et à des éditeurs expérimentés. Nous sommes une entreprise indépendante et les opinions exprimées ici sont les nôtres. Ce site Web est un site de comparaison et d'évaluation professionnel indépendant qui est soutenu par des frais de parrainage pour le site Web et les produits."
+  }
+} 

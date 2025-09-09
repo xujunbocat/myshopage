@@ -1,0 +1,33 @@
+---
+import { siteConfig } from "../config/site";
+import { getTranslations } from "../utils/i18n";
+
+interface Props {
+  lang?: string;
+}
+
+const { lang } = Astro.props;
+const currentYear = new Date().getFullYear();
+
+// 获取当前语言环境和翻译
+const currentLocale = lang || Astro.currentLocale || 'en';
+const { t } = await getTranslations(currentLocale);
+---
+
+<footer class="bg-gray-50 text-gray-600 py-8 mt-auto border-t border-gray-200">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="flex flex-wrap justify-center gap-4 my-4">
+      <a href={siteConfig.links.contact} class="text-sm md:text-base text-gray-500 hover:text-gray-700">{t('footer.contact_us')}</a>
+      <a href={siteConfig.links.about} class="text-sm md:text-base text-gray-500 hover:text-gray-700">{t('footer.about')}</a>
+      <a href={siteConfig.links.privacy} class="text-sm md:text-base text-gray-500 hover:text-gray-700">{t('footer.privacy_policy')}</a>
+      <a href={siteConfig.links.terms} class="text-sm md:text-base text-gray-500 hover:text-gray-700">{t('footer.terms_conditions')}</a>
+      <a href={siteConfig.links.advertising} class="text-sm md:text-base text-gray-500 hover:text-gray-700">{t('footer.advertising_disclosure')}</a>
+    </div>
+          <div class="text-center text-xs md:text-sm text-gray-500 mt-4">
+        <p>{t('footer.copyright')} © {currentYear} {siteConfig.name}</p>
+              <p class="mt-4 text-[10px] md:text-xs text-gray-400 max-w-3xl mx-auto">
+          {t('footer.disclaimer')}
+        </p>
+    </div>
+  </div>
+</footer>

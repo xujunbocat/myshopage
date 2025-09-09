@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: Degular Display;
+        src: url('/fonts/DegularDisplay-Medium.woff2') format('woff2');
+        font-display: swap;
+        font-weight: 500;
+    }
+
+    @font-face {
+        font-family: Degular Display;
+        src: url('/fonts/DegularDisplay-Semibold.woff2') format('woff2');
+        font-display: swap;
+        font-weight: 600;
+    }
+
+    @font-face {
+        font-family: Degular Display;
+        src: url('/fonts/Degular_Display-Bold.woff2') format('woff2');
+        font-display: swap;
+        font-weight: 700;
+    }
+
+    @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-display: swap;
+        src: url('/fonts/Inter-Regular.woff2') format('woff2');
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: 'Degular Display', sans-serif;
+        letter-spacing: 0.025em;
+    }
+
+    .introduction p {
+        margin-bottom: 1rem;
+    }
+
+    .content p {
+        margin-bottom: 1rem;
+    }
+
+    .content h2 {
+        font-size: 2rem;
+        line-height: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: 0.025em;
+    }
+
+    .content h3 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.025em;
+    }
+
+    .content ul {
+        margin-bottom: 1rem;
+    }
+
+    .content ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 3px;
+        list-style-type: none;
+    }
+
+    .content ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #22c55e;
+    }
+
+    .summary p {
+        margin-bottom: 1rem;
+    }
+
+    .summary h2 {
+        font-size: 2rem;
+        line-height: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: 0.025em;
+    }
+
+    .summary h3 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.025em;
+    }
+
+    .summary ul {
+        margin-bottom: 1rem;
+    }
+
+    .summary ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 3px;
+        list-style-type: none;
+    }
+
+    .summary ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #22c55e;
+    }
+
+    .introduction ul {
+        margin-bottom: 1rem;
+    }
+
+    .introduction ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 3px;
+        list-style-type: none;
+    }
+
+    .introduction ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #22c55e;
+    }
+
+    .ribbon {
+        font-family: 'Degular Display', sans-serif;
+    }
+
+    .title,
+    .rating-text,
+    .winner,
+    .listing-title {
+        font-family: 'Degular Display', sans-serif;
+    }
+
+    .pros-content ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 3px;
+        list-style-type: none;
+    }
+
+    .pros-content ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #22c55e;
+        /* 绿色 */
+        font-weight: bold;
+    }
+
+    /* 为cons列表添加红色叉叉图标 */
+    .cons-content ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 3px;
+        list-style-type: none;
+    }
+
+    .cons-content ul li::before {
+        content: "✕";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #ef4444;
+        /* 红色 */
+        font-weight: bold;
+    }
+}

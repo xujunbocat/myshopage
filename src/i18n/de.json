@@ -1,0 +1,33 @@
+{
+  "buttons": {
+    "visit_site": "WEBSITE BESUCHEN",
+    "product_review": "Produktbewertung",
+    "check_availability": "Verfügbarkeit prüfen"
+  },
+  "labels": {
+    "best_overall": "Beste Wahl",
+    "editors_choice": "Redaktions-Wahl",
+    "our_top_choice": "Unsere Top-Wahl",
+    "reviews": "Bewertungen",
+    "by": "Von"
+  },
+  "ratings": {
+    "excellent": "Ausgezeichnet",
+    "great": "Großartig",
+    "good": "Gut",
+    "fair": "Angemessen",
+    "ok": "OK"
+  },
+  "popup": {
+    "exclusive_offer": "Exklusives Angebot heute"
+  },
+  "footer": {
+    "contact_us": "Kontakt",
+    "about": "Über uns",
+    "privacy_policy": "Datenschutz",
+    "terms_conditions": "AGB",
+    "advertising_disclosure": "Werbehinweise",
+    "copyright": "Urheberrecht",
+    "disclaimer": "Die auf unserer Website verwendeten Markenzeichen sind Eigentum ihrer jeweiligen Inhaber und es ist nicht beabsichtigt, dass unsere Website oder unsere Dienstleistungen diese implizit oder explizit unterstützen. Die Ergebnisse und Kommentare sind veranschaulichend und Sie können möglicherweise nicht die gleichen Ergebnisse erzielen, wenn Sie diese Produkte verwenden. Wir geben Feedback zu Produkten und Dienstleistungen durch eingehende Recherche und erfahrene Redakteure ab. Wir sind ein unabhängiges Unternehmen und die hier geäußerten Meinungen sind unsere eigenen. Diese Website ist eine unabhängige professionelle Vergleichs- und Bewertungsseite, die durch Empfehlungsgebühren für die Website und Produkte unterstützt wird."
+  }
+} 

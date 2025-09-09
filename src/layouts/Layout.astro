@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+	hideHeader?: boolean;
+	lang?: string;
+}
+
+const { title, hideHeader = false, lang = 'en' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<link rel="icon" type="image/x-icon" href="/fav.ico" />
+		<meta name="description" content={title} />
+		<title>{title}</title>
+		<link rel="preload" href="/fonts/DegularDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/Degular_Display-Bold.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
+		
+		<!-- AnyTrack Tracking Code -->
+		<script is:inline>
+			!function(e,t,n,s,a){(a=t.createElement(n)).async=!0,a.src="https://assets.anytrack.io/jnoOd6ockQSN.js",(t=t.getElementsByTagName(n)[0]).parentNode.insertBefore(a,t),e[s]=e[s]||function(){(e[s].q=e[s].q||[]).push(arguments)}}(window,document,"script","AnyTrack");
+		</script>
+		<!-- End AnyTrack Tracking Code -->
+	</head>
+	<body class="min-h-screen flex flex-col">
+		{!hideHeader && <Header />}
+		<main class="flex-grow">
+			<slot />
+		</main>
+		<Footer lang={lang} />
+	</body>
+</html>

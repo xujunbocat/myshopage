@@ -1,0 +1,104 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+---
+
+<Layout title="Terms and Conditions">
+  <div class="min-h-screen">
+    <!-- Hero 区域 -->
+    <div class="bg-orange-50">
+      <div class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Terms of Use</h1>
+        <p class="text-gray-600">
+          [Last Revised: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}]
+        </p>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="max-w-5xl mx-auto px-4 py-12">
+      <div class="prose prose-lg max-w-none">
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">1. Introduction</h2>
+          <p class="text-gray-600 mb-4">
+            Welcome to {siteConfig.name} ({siteConfig.url}). These Terms and Conditions govern your use of our blog website. By accessing or using our website, you agree to be bound by these Terms.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">2. Content and Intellectual Property</h2>
+          <p class="text-gray-600 mb-4">
+            All content on this website, including but not limited to articles, images, graphics, and logos, is the property of {siteConfig.name} and is protected by copyright laws. You may not reproduce, distribute, or use our content without our express written permission.
+          </p>
+          <p class="text-gray-600 mb-4">
+            You may share our content through social media platforms using the provided sharing buttons, but you must maintain all copyright notices and attributions.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">3. User Comments and Contributions</h2>
+          <p class="text-gray-600 mb-4">
+            When leaving comments on our blog:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>You must provide accurate and truthful information</li>
+            <li>You must not post spam, offensive, or illegal content</li>
+            <li>You must not impersonate others or post misleading information</li>
+            <li>We reserve the right to remove any comments that violate these terms</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">4. Product Reviews and Recommendations</h2>
+          <p class="text-gray-600 mb-4">
+            Our blog contains product reviews and recommendations. Please note:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Our reviews are based on research and analysis</li>
+            <li>We may receive compensation for purchases made through affiliate links</li>
+            <li>We strive to provide honest and unbiased information</li>
+            <li>You should always verify product information before making a purchase</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">5. Disclaimer of Warranties</h2>
+          <p class="text-gray-600 mb-4">
+            The information provided on our blog is for general informational purposes only. We make no warranties about the completeness, reliability, or accuracy of this information. Any action you take based on the information on our website is strictly at your own risk.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">6. Limitation of Liability</h2>
+          <p class="text-gray-600 mb-4">
+            {siteConfig.name} and its operators will not be liable for any damages arising from the use or inability to use our website, including but not limited to direct, indirect, incidental, or consequential damages.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">7. Changes to Terms</h2>
+          <p class="text-gray-600 mb-4">
+            We reserve the right to modify these terms at any time. We will notify users of any material changes by posting the new Terms on this page. Your continued use of the website after such modifications constitutes your acceptance of the new Terms.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">8. Governing Law</h2>
+          <p class="text-gray-600 mb-4">
+            These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which we operate, without regard to its conflict of law provisions.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">9. Contact Information</h2>
+          <p class="text-gray-600 mb-4">
+            If you have any questions about these Terms, please contact us at:
+          </p>
+          <p class="text-gray-600">
+            Email: {siteConfig.email}
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout> 

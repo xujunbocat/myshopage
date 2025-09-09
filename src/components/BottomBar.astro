@@ -1,0 +1,99 @@
+---
+import { getTranslations } from "../utils/i18n";
+
+interface Props {
+  name: string;
+  rating: number;
+  link: string;
+  lang?: string;
+}
+
+const { name, rating, link, lang } = Astro.props;
+
+// 获取当前语言环境和翻译
+const currentLocale = lang || Astro.currentLocale || 'en';
+const { t } = await getTranslations(currentLocale);
+---
+
+<div id="bottom-bar" class="fixed bottom-0 left-0 right-0 bg-white/95 shadow-lg z-50 transform transition-opacity duration-300 opacity-0 md:hidden">
+  <div class="container mx-auto px-4 py-2 md:py-3">
+    <div class="flex items-center justify-between gap-2 md:gap-4">
+      <div class="flex flex-col min-w-0">
+        <div class="flex items-center gap-1 mb-1">
+          <div class="px-2 py-0.5 bg-lime-200 text-lime-800 text-xs font-semibold">1</div>
+          <div class="px-3 py-0.5 bg-orange-600 text-white text-xs font-semibold rounded-br-xl">{t('labels.best_overall').toUpperCase()}</div>
+        </div>
+        <h3 class="text-base md:text-lg font-semibold text-gray-800 truncate">
+          {name}
+        </h3>
+      </div>
+      <a
+        href={link}
+        target="_blank"
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 md:py-2 px-4 md:px-6 rounded-lg transition-colors relative group whitespace-nowrap text-sm md:text-base shrink-0"
+      >
+        <span class="relative">
+          {t('buttons.visit_site')}
+          <span class="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-pulse group-hover:animate-none" />
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const bottomBar = document.getElementById('bottom-bar');
+  let top1Position = 0;
+  let ctaPosition = 0;
+
+  // 获取元素位置
+  function updatePositions() {
+    const top1Element = document.querySelector('.listing .top1');
+    const ctaElement = document.querySelector('.cta');
+    
+    if (top1Element && ctaElement) {
+      const top1Rect = top1Element.getBoundingClientRect();
+      const ctaRect = ctaElement.getBoundingClientRect();
+      
+      top1Position = top1Rect.top + window.scrollY;
+      ctaPosition = ctaRect.top + window.scrollY;
+    }
+  }
+
+  // 初始化位置
+  updatePositions();
+
+  // 监听滚动
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking && bottomBar) {
+      window.requestAnimationFrame(() => {
+        const currentScroll = window.scrollY;
+        const ctaElement = document.querySelector('.cta');
+        
+        if (ctaElement) {
+          const ctaRect = ctaElement.getBoundingClientRect();
+          // 当CTA元素进入视口时隐藏底部栏
+          if (currentScroll > top1Position && ctaRect.top > window.innerHeight) {
+            bottomBar.style.opacity = '1';
+          } else {
+            bottomBar.style.opacity = '0';
+          }
+        }
+        
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // 监听窗口大小变化，更新位置
+  window.addEventListener('resize', () => {
+    updatePositions();
+  });
+
+  // 页面加载完成后再次更新位置
+  window.addEventListener('load', () => {
+    updatePositions();
+  });
+</script> 

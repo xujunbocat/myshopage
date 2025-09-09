@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+---
+
+<Layout title="About Us">
+  <div class="min-h-screen">
+    <!-- Hero 区域 -->
+    <div class="bg-orange-50">
+      <div class="max-w-5xl mx-auto px-4 py-12">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">About Us</h1>
+        <p class="text-gray-600">
+          Learn more about our mission and values.
+        </p>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="max-w-5xl mx-auto px-4 py-12">
+      <div class="prose prose-lg max-w-none">
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Mission</h2>
+          <p class="text-gray-600 mb-4">
+            At {siteConfig.name}, we are dedicated to providing honest, thorough, and unbiased product reviews to help you make informed purchasing decisions. We believe that every consumer deserves access to reliable information about the products they're interested in.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">What We Do</h2>
+          <p class="text-gray-600 mb-4">
+            We specialize in reviewing a wide range of products, from everyday essentials to specialized items. Our reviews are based on:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Thorough research and testing</li>
+            <li>Expert analysis and evaluation</li>
+            <li>User feedback and experiences</li>
+            <li>Market trends and comparisons</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Values</h2>
+          <p class="text-gray-600 mb-4">
+            We are committed to:
+          </p>
+          <ul class="list-disc pl-6 text-gray-600 mb-4">
+            <li>Honesty and transparency in all our reviews</li>
+            <li>Providing accurate and up-to-date information</li>
+            <li>Maintaining independence in our recommendations</li>
+            <li>Helping consumers make informed decisions</li>
+          </ul>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Team</h2>
+          <p class="text-gray-600 mb-4">
+            Our team consists of experienced reviewers and industry experts who are passionate about helping consumers find the best products for their needs. We combine our expertise with thorough research to provide comprehensive and reliable reviews.
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact Us</h2>
+          <p class="text-gray-600 mb-4">
+            Have questions or suggestions? We'd love to hear from you! You can reach us at:
+          </p>
+          <p class="text-gray-600">
+            Email: {siteConfig.email}
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout> 
