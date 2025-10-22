@@ -21,28 +21,27 @@ import { siteConfig } from "../config/site";
         <section class="mb-8">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">Get in Touch</h2>
           <p class="text-gray-600 mb-4">
-            Have questions about our product reviews or recommendations? Want to share your experience with a product? We're here to help!
+            Have questions about our product reviews or recommendations? Want to share your experience with a product? We’re here to help!
           </p>
           <p class="text-gray-600 mb-4">
             You can reach us through the following channels:
           </p>
           <ul class="list-disc pl-6 text-gray-600 mb-4">
-            <li>Email: {siteConfig.email}</li>
-            <li>Website: {siteConfig.url}</li>
+            <li>Email: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
           </ul>
         </section>
 
         <section class="mb-8">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">Response Time</h2>
           <p class="text-gray-600 mb-4">
-            We strive to respond to all inquiries within 24-48 hours during business days. Please note that response times may be longer during holidays or peak periods.
+            We reply to most emails within one business day. If you don’t see our response, please check your spam/junk folder.
           </p>
         </section>
 
         <section class="mb-8">
-          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Business Hours</h2>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Office Hours</h2>
           <p class="text-gray-600 mb-4">
-            Our team is available Monday through Friday, 9:00 AM to 5:00 PM EST. We do not operate on weekends or major holidays.
+            Our office hours are 9:00 am–5:00 pm.
           </p>
         </section>
       </div>

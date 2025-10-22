@@ -21,7 +21,7 @@ import { siteConfig } from "../config/site";
         <section class="mb-8">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">Affiliate Marketing Disclosure</h2>
           <p class="text-gray-600 mb-4">
-            {siteConfig.name} participates in various affiliate marketing programs, which means we may earn commissions on purchases made through our links to retailer sites. This comes at no additional cost to you.
+            {siteConfig.url} participates in various affiliate marketing programs, which means we may earn commissions on purchases made through our links to retailer sites. This comes at no additional cost to you.
           </p>
           <p class="text-gray-600 mb-4">
             We only recommend products and services that we believe will provide value to our readers. Our affiliate relationships do not influence our content or recommendations.
@@ -58,7 +58,7 @@ import { siteConfig } from "../config/site";
             If you have any questions about our advertising practices or this disclosure, please contact us at:
           </p>
           <p class="text-gray-600">
-            Email: {siteConfig.email}
+            Email: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           </p>
         </section>
       </div>

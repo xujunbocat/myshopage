@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Pain Relief Daily",
-  description: "Your trusted source for product reviews and recommendations",
+  name: "Best Home & Garden Tool Reviews",
+  description: "Unbiased home and garden tool reviews to help you find the best products.",
   url: "bestchoice-review.com",
-  email: "cs@sakerplus.com",
+  email: "customer@bestchoice-review.com",
   links: {
     contact: "/contact",
     about: "/about",

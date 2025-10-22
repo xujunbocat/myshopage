@@ -21,40 +21,37 @@ import { siteConfig } from "../config/site";
         <section class="mb-8">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Mission</h2>
           <p class="text-gray-600 mb-4">
-            At {siteConfig.name}, we are dedicated to providing honest, thorough, and unbiased product reviews to help you make informed purchasing decisions. We believe that every consumer deserves access to reliable information about the products they're interested in.
+            We publish news-style features and in-depth reviews that are honest, unbiased, and verifiable—so you can buy with confidence.
           </p>
         </section>
 
         <section class="mb-8">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">What We Do</h2>
-          <p class="text-gray-600 mb-4">
-            We specialize in reviewing a wide range of products, from everyday essentials to specialized items. Our reviews are based on:
-          </p>
           <ul class="list-disc pl-6 text-gray-600 mb-4">
-            <li>Thorough research and testing</li>
-            <li>Expert analysis and evaluation</li>
-            <li>User feedback and experiences</li>
-            <li>Market trends and comparisons</li>
+            <li>Coverage across everyday and niche categories</li>
+            <li>Side-by-side comparisons and practical buying guides</li>
+            <li>User feedback synthesis and market trend analysis</li>
           </ul>
         </section>
 
         <section class="mb-8">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Values</h2>
           <p class="text-gray-600 mb-4">
-            We are committed to:
+            Transparency (methods disclosed) · Independence (no editorial interference) · Timeliness (regular updates)
           </p>
-          <ul class="list-disc pl-6 text-gray-600 mb-4">
-            <li>Honesty and transparency in all our reviews</li>
-            <li>Providing accurate and up-to-date information</li>
-            <li>Maintaining independence in our recommendations</li>
-            <li>Helping consumers make informed decisions</li>
-          </ul>
         </section>
 
         <section class="mb-8">
-          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Team</h2>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Content Formats</h2>
           <p class="text-gray-600 mb-4">
-            Our team consists of experienced reviewers and industry experts who are passionate about helping consumers find the best products for their needs. We combine our expertise with thorough research to provide comprehensive and reliable reviews.
+            In-depth reviews | Comparisons | Buying guides | Brand features
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Disclosure</h2>
+          <p class="text-gray-600 mb-4">
+            Some articles may include affiliate links; these are clearly disclosed and do not influence our conclusions or ratings.
           </p>
         </section>
 
@@ -64,7 +61,7 @@ import { siteConfig } from "../config/site";
             Have questions or suggestions? We'd love to hear from you! You can reach us at:
           </p>
           <p class="text-gray-600">
-            Email: {siteConfig.email}
+            Email: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           </p>
         </section>
       </div>
